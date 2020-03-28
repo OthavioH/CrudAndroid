@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Conexao extends SQLiteOpenHelper {
 
     private static final String namedb = "banco.db";
@@ -56,5 +59,24 @@ public class Conexao extends SQLiteOpenHelper {
     public Cursor getAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("select * from " +TABLE_NAME,null);
+    }
+
+    public List<Usuario> obterTodos(){
+        List<Usuario> usuarios = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_NAME,new String[]{"ID","nome","cpf","email","telefone","senha"},null,null,null,null,null);
+        while (cursor.moveToNext()){
+            Usuario a = new Usuario();
+            a.setId(cursor.getInt(0));
+            a.setNome(cursor.getString(1));
+            a.setCpf(cursor.getString(2));
+            a.setEmail(cursor.getString(3));
+            a.setTelefone(cursor.getString(4));
+            a.setSenha(cursor.getString(5));
+
+            usuarios.add(a);
+        }
+        return usuarios;
+
     }
 }

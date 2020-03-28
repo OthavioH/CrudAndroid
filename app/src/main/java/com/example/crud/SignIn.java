@@ -3,17 +3,33 @@ package com.example.crud;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class SignIn extends AppCompatActivity {
+
+    private ListView lista;
+    private List<Usuario> usuarios;
+    private Conexao conexao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        setTitle("Usuários");
+
+        lista = findViewById(R.id.listview);
+        conexao = new Conexao(this);
+        usuarios = conexao.obterTodos();
+        ArrayAdapter<Usuario> adapter = new ArrayAdapter<Usuario>(this,android.R.layout.simple_list_item_1,usuarios);
+        lista.setAdapter(adapter);
 
     }
 

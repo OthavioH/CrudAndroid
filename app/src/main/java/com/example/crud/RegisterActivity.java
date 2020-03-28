@@ -71,17 +71,11 @@ public class RegisterActivity extends AppCompatActivity {
                 verificarVazios();
             }
         });
-        /*btnCancelar.setOnClickListener(new View.OnClickListener() {
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-            }
-        });*/
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verDados();
             }
         });
     }
