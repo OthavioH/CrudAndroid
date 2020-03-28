@@ -107,7 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isInserted = conexao.inserirUsuario(edtNome.getText().toString(),edtCPF.getText().toString(),edtEmail.getText().toString(),"("+edtDDD.getText().toString()+") " + edtTelefone.getText().toString(),edtSenha.getText().toString());
         if(isInserted){
             Toast.makeText(this, "Dados Inseridos com sucesso", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this,SignIn.class);
             overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+            startActivity(i);
         }
         else{
             Toast.makeText(this, "Falha ao inserir os dados", Toast.LENGTH_SHORT).show();
@@ -243,36 +245,5 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void verDados() {
-
-        Cursor cursor = conexao.getAllData();
-
-        if(cursor.getCount() == 0 ){
-            mostrarMensagem("Erro","Nada encontrado");
-        }
-
-        StringBuilder buffer = new StringBuilder();
-
-        while (cursor.moveToNext()){
-            buffer.append("ID : "+ cursor.getString(0)+ "\n");
-            buffer.append("nome : "+ cursor.getString(1)+ "\n");
-            buffer.append("cpf : "+ cursor.getString(2)+ "\n");
-            buffer.append("email : "+ cursor.getString(3)+ "\n");
-            buffer.append("telefone : "+ cursor.getString(4)+ "\n");
-            buffer.append("senha : "+ cursor.getString(5)+ "\n\n");
-        }
-
-        //mostrar todos os dados
-        mostrarMensagem("Dados",buffer.toString());
-
-    }
-
-    public void mostrarMensagem(String title,String message){
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
-    }
 
 }
