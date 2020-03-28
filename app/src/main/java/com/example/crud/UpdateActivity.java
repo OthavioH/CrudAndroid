@@ -82,12 +82,12 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void textShadows() {
-        lblNome.setShadowLayer(30,2,2, Color.WHITE);
-        lblTelefone.setShadowLayer(30,2,2, Color.WHITE);
-        lblSenha.setShadowLayer(30,2,2, Color.WHITE);
-        lblEmail.setShadowLayer(30,2,2, Color.WHITE);
-        lblCPF.setShadowLayer(30,2,2, Color.WHITE);
-        lblPreencha.setShadowLayer(30,2,2, Color.WHITE);
+        lblNome.setShadowLayer(30,2,2, Color.BLACK);
+        lblTelefone.setShadowLayer(30,2,2, Color.BLACK);
+        lblSenha.setShadowLayer(30,2,2, Color.BLACK);
+        lblEmail.setShadowLayer(30,2,2, Color.BLACK);
+        lblCPF.setShadowLayer(30,2,2, Color.BLACK);
+        lblPreencha.setShadowLayer(30,2,2, Color.BLACK);
     }
 
     private void verificarVazios() {

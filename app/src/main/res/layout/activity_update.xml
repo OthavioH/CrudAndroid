@@ -23,7 +23,7 @@
 
                 android:text="Preencha todos os campos"
                 android:textSize="25sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
 
                 app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="Nome"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="23sp"
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="CPF"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="23sp"
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="Email"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="23sp"
 
@@ -126,7 +126,7 @@
 
                 android:layout_marginTop="20dp"
                 android:text="Telefone"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="23sp"
 
                 android:textStyle="bold"
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="Senha"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="23sp"
 
                 android:textStyle="bold"
@@ -166,6 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@id/edtTelefoneUpdate"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="4dp"/>
+
             <EditText android:id="@+id/edtSenhaUpdate"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
