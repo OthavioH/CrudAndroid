@@ -1,10 +1,8 @@
 package com.example.crud;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,24 +13,34 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity {
+public class UpdateActivity extends AppCompatActivity {
 
-    TextView lblNome,lblCPF,lblEmail,lblTelefone,lblSenha,lblDDD,lblConfirmarSenha,lblPreencha;
-    Button btnRegistrar,btnCancelar;
-    EditText edtNome,edtCPF,edtEmail,edtTelefone,edtSenha,edtDDD,edtConfirmarSenha;
+    TextView lblNome,lblCPF,lblEmail,lblTelefone,lblSenha,lblPreencha;
+    Button btnUpdate,btnCancelar;
+    EditText edtNome,edtCPF,edtEmail,edtTelefone,edtSenha;
     String cpfFormatado;
     Conexao conexao;
     private Usuario usuario = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_update);
+
+        Intent i = getIntent();
+        usuario = (Usuario) i.getSerializableExtra("usuario");
 
         startComponents();
         textShadows();
         buttonsClicks();
-
         conexao = new Conexao(this);
+
+
+        edtNome.setText(usuario.getNome());
+        edtCPF.setText(usuario.getCpf());
+        edtEmail.setText(usuario.getEmail());
+        edtTelefone.setText(usuario.getTelefone());
+        edtSenha.setText(usuario.getSenha());
     }
 
     @Override
@@ -41,29 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
         verificarMudancas();
     }
 
-
-    private void startComponents(){
-        lblPreencha = findViewById(R.id.lblPreencha);
-        lblNome = findViewById(R.id.lblNome);
-        lblCPF = findViewById(R.id.lblCPF);
-        lblEmail = findViewById(R.id.lblEmail);
-        lblSenha = findViewById(R.id.lblSenha);
-        lblConfirmarSenha = findViewById(R.id.lblConfirmarSenha);
-        lblDDD = findViewById(R.id.lblDDD);
-        lblTelefone = findViewById(R.id.lblTelefone);
-        btnCancelar = findViewById(R.id.btnCancelarCadastro);
-        btnRegistrar = findViewById(R.id.btnRegistrarCadastro);
-        edtNome = findViewById(R.id.edtNome);
-        edtCPF = findViewById(R.id.edtCPF);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtTelefone = findViewById(R.id.edtTelefone);
-        edtDDD = findViewById(R.id.edtDDD);
-        edtSenha = findViewById(R.id.edtSenha);
-        edtConfirmarSenha = findViewById(R.id.edtConfirmarSenha);
-    }
-
-    private void buttonsClicks(){
-        btnRegistrar.setOnClickListener(new View.OnClickListener() {
+    private void buttonsClicks() {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 verificarVazios();
@@ -78,6 +65,31 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void startComponents() {
+        lblPreencha = findViewById(R.id.lblPreenchaUpdate);
+        lblNome = findViewById(R.id.lblNomeUpdate);
+        lblCPF = findViewById(R.id.lblCPFUpdate);
+        lblEmail = findViewById(R.id.lblEmailUpdate);
+        lblSenha = findViewById(R.id.lblSenhaUpdate);
+        lblTelefone = findViewById(R.id.lblTelefoneUpdate);
+        btnCancelar = findViewById(R.id.btnCancelarUpdate);
+        btnUpdate = findViewById(R.id.btnAtualizarUsuario);
+        edtNome = findViewById(R.id.edtNomeUpdate);
+        edtCPF = findViewById(R.id.edtCPFUpdate);
+        edtEmail = findViewById(R.id.edtEmailUpdate);
+        edtTelefone = findViewById(R.id.edtTelefoneUpdate);
+        edtSenha = findViewById(R.id.edtSenhaUpdate);
+    }
+
+    private void textShadows() {
+        lblNome.setShadowLayer(30,2,2, Color.WHITE);
+        lblTelefone.setShadowLayer(30,2,2, Color.WHITE);
+        lblSenha.setShadowLayer(30,2,2, Color.WHITE);
+        lblEmail.setShadowLayer(30,2,2, Color.WHITE);
+        lblCPF.setShadowLayer(30,2,2, Color.WHITE);
+        lblPreencha.setShadowLayer(30,2,2, Color.WHITE);
+    }
+
     private void verificarVazios() {
         if(edtNome.getText().toString().trim().equals("")){
             edtNome.setBackground(getResources().getDrawable(R.drawable.error_input));
@@ -85,43 +97,26 @@ public class RegisterActivity extends AppCompatActivity {
             edtCPF.setBackground(getResources().getDrawable(R.drawable.error_input));
         }else if (edtEmail.getText().toString().trim().equals("")){
             edtEmail.setBackground(getResources().getDrawable(R.drawable.error_input));
-        }else if (edtDDD.getText().toString().trim().equals("")){
-            edtDDD.setBackground(getResources().getDrawable(R.drawable.error_input));
         }else if (edtTelefone.getText().toString().trim().equals("")){
             edtTelefone.setBackground(getResources().getDrawable(R.drawable.error_input));
         }
         else if (edtSenha.getText().toString().equals("")){
             edtSenha.setBackground(getResources().getDrawable(R.drawable.error_input));
-        }
-        else if (edtConfirmarSenha.getText().toString().equals("")){
-            edtConfirmarSenha.setBackground(getResources().getDrawable(R.drawable.error_input));
-        }else{
-            cadastrarUsuario();
+        } else{
+            atualizarUsuario();
         }
     }
 
-    private void cadastrarUsuario() {
-        boolean isInserted = conexao.inserirUsuario(edtNome.getText().toString(),edtCPF.getText().toString(),edtEmail.getText().toString(),"("+edtDDD.getText().toString()+") " + edtTelefone.getText().toString(),edtSenha.getText().toString());
-        if(isInserted){
-            Toast.makeText(this, "Dados Inseridos com sucesso", Toast.LENGTH_SHORT).show();
+    private void atualizarUsuario() {
+        boolean isUpdate = conexao.atualizarDados(usuario.getId().toString(),edtNome.getText().toString(),edtCPF.getText().toString(),edtEmail.getText().toString(),edtTelefone.getText().toString(),edtSenha.getText().toString());
+        if(isUpdate){
+            Toast.makeText(this, "Dados atualizados", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(this,SignIn.class);
-            overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             startActivity(i);
+            overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        }else {
+            Toast.makeText(this, "Dados não atualizados", Toast.LENGTH_SHORT).show();
         }
-        else{
-            Toast.makeText(this, "Falha ao inserir os dados", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void textShadows() {
-        lblConfirmarSenha.setShadowLayer(30,2,2, Color.BLACK);
-        lblNome.setShadowLayer(30,2,2, Color.BLACK);
-        lblTelefone.setShadowLayer(30,2,2, Color.BLACK);
-        lblDDD.setShadowLayer(30,2,2, Color.BLACK);
-        lblSenha.setShadowLayer(30,2,2, Color.BLACK);
-        lblEmail.setShadowLayer(30,2,2, Color.BLACK);
-        lblCPF.setShadowLayer(30,2,2, Color.BLACK);
-        lblPreencha.setShadowLayer(30,2,2, Color.BLACK);
     }
 
     private boolean validateEmailFormat(final String email) {
@@ -142,11 +137,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(edtNome.getText().toString().trim().equals("")){
                     edtNome.setBackground(getResources().getDrawable(R.drawable.error_input));
-                    btnRegistrar.setEnabled(false);
+                    btnUpdate.setEnabled(false);
                 }
                 else{
                     edtNome.setBackground(getResources().getDrawable(R.drawable.custom_input_lessround));
-                    btnRegistrar.setEnabled(true);
+                    btnUpdate.setEnabled(true);
                 }
             }
 
@@ -218,29 +213,5 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-        edtConfirmarSenha.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(edtConfirmarSenha.getText().toString().equals("") || !edtConfirmarSenha.getText().toString().equals(edtSenha.getText().toString())){
-                    edtConfirmarSenha.setBackground(getResources().getDrawable(R.drawable.error_input));
-                }
-                else {
-                    edtConfirmarSenha.setBackground(getResources().getDrawable(R.drawable.custom_input_lessround));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
-
-
-
 }

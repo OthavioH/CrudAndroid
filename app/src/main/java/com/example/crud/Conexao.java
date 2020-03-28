@@ -77,6 +77,24 @@ public class Conexao extends SQLiteOpenHelper {
             usuarios.add(a);
         }
         return usuarios;
+    }
 
+    public void excluirUsuario(Usuario usuario){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME,"ID = ?",new String[]{usuario.getId().toString()});
+    }
+
+    public boolean atualizarDados(String id,String nome, String cpf, String email, String telefone, String senha) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_1,id);
+        contentValues.put(COL_2,nome);
+        contentValues.put(COL_3,cpf);
+        contentValues.put(COL_4,email);
+        contentValues.put(COL_5,telefone);
+        contentValues.put(COL_6,senha);
+
+        db.update(TABLE_NAME,contentValues, "ID = ?", new String[]{id});
+        return true;
     }
 }

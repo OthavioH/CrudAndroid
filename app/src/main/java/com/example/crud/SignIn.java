@@ -1,12 +1,18 @@
 package com.example.crud;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -34,7 +40,7 @@ public class SignIn extends AppCompatActivity {
         ArrayAdapter<Usuario> adapter = new ArrayAdapter<Usuario>(this,android.R.layout.simple_list_item_1,usuariosFiltrados);
         usuariosFiltrados.addAll(usuarios);
         lista.setAdapter(adapter);
-
+        registerForContextMenu(lista);
     }
 
     @Override
@@ -71,6 +77,34 @@ public class SignIn extends AppCompatActivity {
         lista.invalidateViews();
     }
 
+    public void deletar(MenuItem menuItem){
+        final AdapterView.AdapterContextMenuInfo clique = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+        final Usuario usuarioExcluir = usuariosFiltrados.get(clique.position);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Atenção")
+                .setMessage("Deseja excluir este usuário?")
+                .setNegativeButton("NÃO",null)
+                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        usuariosFiltrados.remove(usuarioExcluir);
+                        usuarios.remove(usuarioExcluir);
+                        conexao.excluirUsuario(usuarioExcluir);
+                        lista.invalidateViews();
+                    }
+                }).create();
+        dialog.show();
+    }
+    public void atualizar(MenuItem item){
+        final AdapterView.AdapterContextMenuInfo clique = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Usuario usuarioAtualizar = usuariosFiltrados.get(clique.position);
+
+        Intent i = new Intent(this,UpdateActivity.class);
+        i.putExtra("usuario",usuarioAtualizar);
+        startActivity(i);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -84,4 +118,10 @@ public class SignIn extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_contexto,menu);
+    }
 }
