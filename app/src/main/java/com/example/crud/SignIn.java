@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class SignIn extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class SignIn extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
                 overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
                 startActivity(i);
+                Toast.makeText(this, "oi", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
